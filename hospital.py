@@ -5,13 +5,22 @@ import pickle
 import os
 
 #Title
-
+st.set_page_config(page_title="Smart Hospital Patient Navigator Arman",
+                  page_icon="🏥", layout="wide")
 
 # Load Model and Style
+with open("style.html", "r", encoding="utf-8") as f:
+    style = f.read()
 
 
+st.markdown(style, unsafe_allow_html = True)
 
-bundle        =
+@st.cache_resource
+def load_model():
+    with open('hospital_model.pkl', 'rb') as f:
+        return pickle.load(f)
+
+bundle        = load_model()
 model         = bundle['model']
 scaler        = bundle['scaler']
 features      = bundle['features']
@@ -55,11 +64,84 @@ DEPT_INFO = {
         'next':['Visit Level 2, Wing D','Estimated wait: 15–20 min','Bring photos of affected area if possible']
     },
 }
+with open('header.html', 'r', encoding='utf-8')as f:
+    header_html = f.read()
 
+    st.markdown(header_html, unsafe_allow_html=True)
 
 with st.form("triage_form"):
     #Make the Form
-    pass
+    with open('symptoms.html','r', encoding='utf-8') as f:
+        symptoms = f.reas()
+
+    st.markdown(symptoms, unsafe_allow_html=True)
+
+    c1,c2,c3,c4 = st.columns(4)
+    with c1:
+        fever = st.checkbox('Fever')
+        cough = st.checkbox('Cough')
+    with c2:
+        headache = st.checkbox('headach')
+        shortness_breath = st.checkbox('Shortness of Breath')
+    with c3:
+        chest_pain = st.checkbox('Cheast Pain')
+        stomach_pain = st.checkbox('Stomach Pain')
+    with c4:
+        nausea_vomiting = st.checkbox('Nausea / Vomitting')
+        dizziness = st.checkbox('Dizziness')
+
+    c5, _, _, _ = st.columns(4)
+
+    with c5:
+        skin_rash = st.checkbox('Skin Rash')
+    
+    st.markdown("<br>", unsafe_allow_html = True)
+
+    with open("duration_complaint.html", "r", encoding="uth-8") as f:
+        duration_complaint = f.read()
+    st.markdown(duration_complaint, unsafe_allow_html = True)
+
+    col_cc, col_dur = st.columns(2)
+    with col_cc:
+        chief_complaint = st.selectbox("Chief Complaint", options=list(cc_map.keys()))
+    with col_dur:
+        duration = st.selectbox("Duration", options=list(cc_map.keys()), index=1)
+    
+    st.markdown("<br>", unsafe_allow_html = True)
+    with open("severity.html", "r", encoding="utf-8") as f:
+        severity = f.read()
+    st.markdown(severity, unsafe_allow_html=True)
+
+    col_temp, col_hc = st.columns(2)
+    with col_temp:
+        temprature_level = st.selectbox("Tempratur", options=list(temp_map.keys())index=1)
+    with col_hc:
+        heart_rate_level = st.selectbox("Heart Rate", options=list(hc_map.keys())index=1)
+    
+    st.markdown("<br>", unsafe_allow_html = True)
+
+    with open("history.html", "r", encoding = "utf-8") as f:
+        history = f.read()
+
+    ch1, ch2, ch3, _ = st.columns(4)
+    with ch1:
+        hypertension = st.check("High Blood Pressure")
+    with ch2:
+        heart_disease = st.check("Heart Disease")
+    with ch3:
+        asthma = st.check("Atshma")
+
+    col_age, col_gen = st.columns(2)
+    with col_age:
+        age = st.number_input("Age", min_value=1, Max_Value=120, value=35)
+    with col_gen:
+        gender = st.selectbox("Gender", option=['Female', 'Male'])
+
+    st.markdown("<br>", unsafe_allow_html = True)
+    submitted = st.form_submit_button("Recomend")
+
+
+
 
 if submitted:
     patient = pd.DataFrame([{
