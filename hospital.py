@@ -173,7 +173,7 @@ if submitted:
         'chief_complaint' : cc_map.get(chief_complaint, 9)
     }])
     patient_scaled = patient.copy()
-    patient_scaled[cols_to_scale] = scaler.tranform(patient.tranform(patient[cols_to_scale]))
+    patient_scaled[cols_to_scale] = scaler.tranform(patient[cols_to_scale])
     pred = model.predict(patient_scaled[features])[0]
     prob = model.predict_proba(patient_scaled[features])[0]
     dept_name = dept_map_inv[pred]
