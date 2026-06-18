@@ -126,11 +126,11 @@ with st.form("triage_form"):
 
     ch1, ch2, ch3, _ = st.columns(4)
     with ch1:
-        hypertension = st.check("High Blood Pressure")
+        hypertension = st.checkbox("High Blood Pressure")
     with ch2:
-        heart_disease = st.check("Heart Disease")
+        heart_disease = st.checkbox("Heart Disease")
     with ch3:
-        asthma = st.check("Atshma")
+        asthma = st.checkbox("Atshma")
 
     st.markdown("<br>", unsafe_allow_html= True)
 
