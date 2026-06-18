@@ -72,7 +72,7 @@ with open('header.html', 'r', encoding='utf-8')as f:
 with st.form("triage_form"):
     #Make the Form
     with open('symptoms.html','r', encoding='utf-8') as f:
-        symptoms = f.reas()
+        symptoms = f.read()
 
     st.markdown(symptoms, unsafe_allow_html=True)
 
