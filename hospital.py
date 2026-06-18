@@ -207,7 +207,7 @@ if submitted:
             border=info['border'],
             icon=info['icon'],
             color=info['color'],
-            deft_name=dept_name,
+            dept_name=dept_name,
             desc=info['desc'],
             steps_html = steps_html
         ), unsafe_allow_html=True)
