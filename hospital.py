@@ -122,6 +122,7 @@ with st.form("triage_form"):
 
     with open("history.html", "r", encoding = "utf-8") as f:
         history = f.read()
+    st.markdown(history, unsafe_allow_html=True)
 
     ch1, ch2, ch3, _ = st.columns(4)
     with ch1:
@@ -131,6 +132,14 @@ with st.form("triage_form"):
     with ch3:
         asthma = st.check("Atshma")
 
+    st.markdown("<br>", unsafe_allow_html= True)
+
+    with open("patient.html", "r", encoding="utf-8") as f:
+        patient_age = f.read()
+
+    st.markdown(patient_age, unsafe_allow_html=True)
+
+    with open
     col_age, col_gen = st.columns(2)
     with col_age:
         age = st.number_input("Age", min_value=1, Max_Value=120, value=35)
@@ -164,6 +173,13 @@ if submitted:
         'heart_disease' : int(heart_disease),
         'chief_complaint' : cc_map.get(chief_complaint, 9)
     }])
+    patient_scaled = patient.copy()
+    patient_scaled[cols_to_scale] = scaler.tranform(patient.tranform(patient[cols_to_scale]))
+    pred = model.predict(patient_scaled[features])[0]
+    prob = model.predict_proba(patient_scaled[features])[0]
+    dept_name = dept_map_inv[pred]
+    confidence = prob[pred] * 100
+    info = DEPT_INFO[dept_name]
    # Use the ai Model
     st.markdown("---")
     st.markdown("""
@@ -177,9 +193,25 @@ if submitted:
 # LEFT COLUMN: THE RESULT CARD
 # ==========================================
     with res_col:
-        pass
+        steps_html = ''.join(
+            f'<div style="display:flex;alige-item:center;gap:8px;margin-bottom:6px;"'
+            f'<span style="color:{info["color"]};font-size:14px;"></span"'
+            f'<span style="font-size:14px;color:#374151;">{step}</span></div>'
+            for step in info['next']
+        )
         # 1. Build the loop string in Python (too complex for pure HTML)
+        with open("result.html","r", encoding="utf-8") as f:
+            result_template = f.read()
 
+        st.markdown(result_template.format(
+            bg=info['bg'],
+            border=info['border'],
+            icon=info['icon'],
+            color=info['color'],
+            deft_name=dept_name,
+            desc=info['desc'],
+            steps_html = steps_html
+        ), unsafe_allow_html=True)
         
         # 2. Load the HTML shell
 
@@ -193,11 +225,11 @@ if submitted:
     # ==========================================
     with prob_col:
         # 1. Build the loop string in Python
-        sorted_depts = sorted(dept_map_inv.items(), key=lambda x: proba[x[0]], reverse=True)
+        sorted_depts = sorted(dept_map_inv.items(), key=lambda x: prob[x[0]], reverse=True)
         bars_html = ""
         for idx, dname in sorted_depts:
             #add The Department
-            pct    = proba[idx] * 100
+            pct    = prob[idx] * 100
             dinfo  = DEPT_INFO[dname]
             is_top = dname == dept_name
             bars_html += f"""
@@ -217,9 +249,14 @@ if submitted:
 </div>"""
 
         # 2. Load the HTML shell
+        with open("confidence_card.html","r", encoding="utf-8") as f:
+            confidence_template = f.read()
 
 
         # 3. Inject the loop and display
+        st.markdown(confidence_template.format(
+            bars_html = bars_html
+        ), unsafe_allow_html=True)
         
    
 
