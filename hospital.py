@@ -139,7 +139,6 @@ with st.form("triage_form"):
 
     st.markdown(patient_age, unsafe_allow_html=True)
 
-    with open
     col_age, col_gen = st.columns(2)
     with col_age:
         age = st.number_input("Age", min_value=1, Max_Value=120, value=35)
