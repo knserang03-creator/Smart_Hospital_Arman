@@ -97,7 +97,7 @@ with st.form("triage_form"):
     
     st.markdown("<br>", unsafe_allow_html = True)
 
-    with open("duration_complaint.html", "r", encoding="uth-8") as f:
+    with open("duration_complaint.html", "r", encoding="utf-8") as f:
         duration_complaint = f.read()
     st.markdown(duration_complaint, unsafe_allow_html = True)
 
