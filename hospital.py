@@ -141,7 +141,7 @@ with st.form("triage_form"):
 
     col_age, col_gen = st.columns(2)
     with col_age:
-        age = st.number_input("Age", min_value=1, Max_Value=120, value=35)
+        age = st.number_input("Age", min_value=1, max_Value=120, value=35)
     with col_gen:
         gender = st.selectbox("Gender", option=['Female', 'Male'])
 
@@ -160,7 +160,7 @@ if submitted:
         'headache' : int(headache),
         'chest_pain' : int(chest_pain),
         'stomach_pain' : int(stomach_pain),
-        'shortness_breath' : int(shortness_beath),
+        'shortness_breath' : int(shortness_breath),
         'nausea_vomiting' : int(nausea_vomiting),
         'dizziness' : int(dizziness),
         'skin_rash' : int(skin_rash),
